@@ -60,8 +60,24 @@ const fetchClassificationForSpeciesInEpisode = async (episodeId) => {
   const classifications = speciesResponses.map(
     (response) => response.classification
   );
-  
+
   return classifications;
+};
+
+const fetchTotalPopulationOfPlanets = async () => {
+  const planetsResponse = await axios.get(`${BASE_URI}/planets/`);
+
+  // Get the list of planets from the response
+  const planets = planetsResponse.data.results;
+
+  // Calculate the total population of all planets
+  const totalPopulation = planets.reduce(
+    (sum, { population }) =>
+      sum + parseInt(population === "unknown" ? 0 : population),
+    0
+  );
+
+  return totalPopulation;
 };
 
 module.exports = {
@@ -69,4 +85,5 @@ module.exports = {
   fetchStarshipsForLukeSkywalker,
   fetchEpisode,
   fetchClassificationForSpeciesInEpisode,
+  fetchTotalPopulationOfPlanets,
 };
