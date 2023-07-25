@@ -26,7 +26,10 @@ mock.onGet('https://swapi.dev/api/species/2/').reply(200, mockSpeciesResponses[1
 describe("Species Controller - getClassificationForSpeciesInEpisode", () => {
   it("should return the classification of all species in the 1st episode", async () => {
     const req = { params: { episodeId: 1 } }
-    const res = { json: jest.fn(), status: () => ({ json: () => {} }) }
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
 
     await speciesController.getClassificationForSpeciesInEpisode(req, res);
 
@@ -40,4 +43,21 @@ describe("Species Controller - getClassificationForSpeciesInEpisode", () => {
       "classifications": expectedClassifications
     });
   })
+
+  it('should handle API errors gracefully', async () => {
+    const req = { params: { episodeId: 1 } }
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    // Simulate an error response from the Star Wars API
+    mock.onGet('https://swapi.dev/api/films/1').reply(404);
+
+    await speciesController.getClassificationForSpeciesInEpisode(req, res);
+
+    // Assert that the function returns an error response
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalled();
+  });
 })

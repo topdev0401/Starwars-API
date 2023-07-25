@@ -21,10 +21,31 @@ mock.onGet('https://swapi.dev/api/starships/22/').reply(200, mockResponse.starsh
 describe("Starships Controller - getStarshipsForLukeSkywalker", () => {
   it("should return an array of starships related to Luke Skywalker", async () => {
     const req = {}
-    const res = { json: jest.fn(), status: () => ({ json: () => {} }) }
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
 
     await starshipsController.getStarshipsForLukeSkywalker(req, res);
 
     expect(res.json).toHaveBeenCalledWith(mockResponse);
   })
+
+
+  it('should handle API errors gracefully', async () => {
+    const req = {};
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    // Simulate an error response from the Star Wars API
+    mock.onGet('https://swapi.dev/api/people/1').reply(404);
+
+    await starshipsController.getStarshipsForLukeSkywalker(req, res);
+
+    // Assert that the function returns an error response
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalled();
+  });
 })

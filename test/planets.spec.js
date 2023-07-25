@@ -20,7 +20,10 @@ mock.onGet('https://swapi.dev/api/planets/').reply(200, mockResponse);
 describe("Planets Controller - getTotalPopulationOfPlanets", () => {
   it("should return the total population of planets", async () => {
     const req = {}
-    const res = { json: jest.fn(), status: () => ({ json: jest.fn() })}
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
 
     await planetsController.getTotalPopulationOfPlanets(req, res);
 
@@ -33,4 +36,21 @@ describe("Planets Controller - getTotalPopulationOfPlanets", () => {
 
     expect(res.json).toHaveBeenCalledWith({ status_code: 200, total_population: expectedTotalPopulation });
   })
+
+  it('should handle API errors gracefully', async () => {
+    const req = {};
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    // Simulate an error response from the Star Wars API
+    mock.onGet('https://swapi.dev/api/planets/').reply(404);
+
+    await planetsController.getTotalPopulationOfPlanets(req, res);
+
+    // Assert that the function returns an error response
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalled();
+  });
 })

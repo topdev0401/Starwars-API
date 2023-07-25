@@ -5,11 +5,9 @@
  */
 
 const handleError = (res, err) => {
-  // Prints error in console
-  console.error(err);
-
   // Sends error to user
-  res.status(err.code).json({
+  
+  res.status(err.response.status).json({
     errors: {
       msg: err.message,
     },
