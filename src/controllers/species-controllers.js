@@ -7,7 +7,10 @@ const getClassificationForSpeciesInEpisode = async (req, res) => {
     const classifications = await fetchClassificationForSpeciesInEpisode(
       episodeId
     );
-    res.status(200).json(classifications);
+    res.json({
+      status_code: 200,
+      classifications
+    });
   } catch (err) {
     handleError(res, err);
   }

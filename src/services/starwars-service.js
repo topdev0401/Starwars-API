@@ -8,7 +8,7 @@ const { BASE_URI } = require("../utils/constants");
  */
 const fetchLukeSkywalker = async () => {
   return await axios
-    .get(`${BASE_URI}/people//1`)
+    .get(`${BASE_URI}/people/1`)
     .then((response) => response.data);
 };
 

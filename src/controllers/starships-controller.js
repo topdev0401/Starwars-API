@@ -4,7 +4,10 @@ const { handleError } = require("../utils/handleError");
 const getStarshipsForLukeSkywalker = async (req, res) => {
   try {
     const starships = await fetchStarshipsForLukeSkywalker();
-    res.status(200).json(starships);
+    res.json({
+      status_code: 200,
+      starships
+    });
   } catch (err) {
     handleError(res, err);
   }

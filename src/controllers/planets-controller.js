@@ -4,7 +4,10 @@ const { handleError } = require("../utils/handleError");
 const getTotalPopulationOfPlanets = async (req, res) => {
   try {
     const totalPopulation = await fetchTotalPopulationOfPlanets();
-    res.status(200).json(totalPopulation);
+    res.json({
+      status_code: 200,
+      total_population: totalPopulation,
+    });
   } catch (err) {
     handleError(res, err);
   }
