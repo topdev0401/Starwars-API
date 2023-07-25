@@ -42,7 +42,7 @@ const fetchEpisode = async (episodeId) => {
 };
 
 /**
- * Get all species of a given episode
+ * Get classification for all species in the given episode
  * @param {number} episodeId Episode #.
  */
 const fetchClassificationForSpeciesInEpisode = async (episodeId) => {

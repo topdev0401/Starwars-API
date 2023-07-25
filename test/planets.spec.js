@@ -30,7 +30,7 @@ describe("Planets Controller - getTotalPopulationOfPlanets", () => {
     // Calculate the expected total population from the mock response
     const expectedTotalPopulation = mockResponse.results.reduce((total, planet) => {
       return planet.population !== 'unknown'
-        ? total + Number(planet.population)
+        ? total + parseInt(planet.population)
         : total;
     }, 0);
 
